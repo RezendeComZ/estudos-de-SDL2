@@ -17,7 +17,33 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // renderizar em uma "window" // -1 é onde quero renderizar, -1 é indicando o driver que vai satisfazer tudo que preciso // Se tiver placa de vídeo com aceleração o último parâmetro indica para usar
 }
 
+SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
+{
+	SDL_Texture* texture = NULL;
+	texture = IMG_LoadTexture(renderer, p_filePath);
+
+	if (texture == NULL)
+		std::cout << "Failed to load texture. Error: " << SDL_GetError() << std::endl;
+
+	return texture;
+}
+
 void RenderWindow::cleanUp()
 {
 	SDL_DestroyWindow(window);
+}
+
+void RenderWindow::clear()
+{
+	SDL_RenderClear(renderer);
+}
+
+void RenderWindow::render(SDL_Texture* p_tex)
+{
+	SDL_RenderCopy(renderer, p_tex, NULL, NULL);
+}
+
+void RenderWindow::display()
+{
+	SDL_RenderPresent(renderer);
 }

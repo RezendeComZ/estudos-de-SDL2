@@ -12,7 +12,9 @@ int main(int argc, char* args[])
 	if (!(IMG_Init(IMG_INIT_PNG)))
 		std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
 
-	RenderWindow window("Joguin v1.0", 500, 600); // iniciar a janela
+	RenderWindow window("Joguin v1.0", 500, 600); // iniciar a janela e o tamanho da janela
+
+	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
 	bool gameRunning = true;
 
@@ -26,6 +28,10 @@ int main(int argc, char* args[])
 			if (event.type == SDL_QUIT)
 				gameRunning = false;
 		}
+
+		window.clear();
+		window.render(grassTexture);
+		window.display();
 	}
 
 	window.cleanUp();
