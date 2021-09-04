@@ -2,7 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "RenderWindow.hpp"
+#include "RenderWindow.hpp" // Dá pra usar aspas duplas para o include, vale a pena usar em coisas que eu mesmo crio, para não misturar
 
 int main(int argc, char* args[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char* args[])
 	if (!(IMG_Init(IMG_INIT_PNG)))
 		std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
 
-	RenderWindow window("GAME v1.0", 200, 400);
+	RenderWindow window("Joguin v1.0", 500, 600); // iniciar a janela
 
 	bool gameRunning = true;
 
@@ -31,5 +31,5 @@ int main(int argc, char* args[])
 	window.cleanUp();
 	SDL_Quit();
 
-	return 0;
+	return 0; // cpp não precisa retornar 0, é uma coisa que é SDL pede
 }
