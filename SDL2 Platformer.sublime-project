@@ -2,7 +2,7 @@
 	"folders":
 	[
 		{
-			"path": "bin/.."
+			"path": "."
 		}
 	],
 	"build_systems":
