@@ -2,8 +2,9 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "RenderWindow.hpp"
+#include "RenderWindow.hpp" // o #pragma once tá impedindo de carregar novamente os mesmos includes
 
+// Essas funções foram declaradas em "RenderWindows.cpp":
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 	:window(NULL), renderer(NULL) // pra testar se inicializou a janela
 {
@@ -14,7 +15,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 		std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // renderizar em "window" // -1 é onde quero renderizar, -1 é indicando o driver que vai satisfazer tudo que preciso // Se tiver placa de vídeo com aceleração o último parâmetro indica para usar
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // renderizar em "window" // -1 é onde quero renderizar, -1 é indicando o driver que vai satisfazer tudo que preciso // Se tiver uma placa de vídeo com aceleração o último parâmetro indica para usar ela
 }
 
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
@@ -40,8 +41,23 @@ void RenderWindow::clear()
 
 void RenderWindow::render(SDL_Texture* p_tex)
 {
-	SDL_RenderCopy(renderer, p_tex, NULL, NULL);
-}
+
+	SDL_Rect src; 
+	src.x = 0;
+	src.y = 0;
+	src.w = 32;
+	src.h = 32;
+
+	SDL_Rect dst;
+	dst.x = 400;
+	dst.y = 200;
+	dst.w = 32 * 4;
+	dst.h = 32 * 4;
+
+
+	SDL_RenderCopy(renderer, p_tex, &src, &dst); // Já não mais mais NULLs: O primeiro NULL é o source da textura, o outro é o destino
+}; 
+
 
 void RenderWindow::display()
 {
