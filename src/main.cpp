@@ -29,13 +29,13 @@ int main(int argc, char* args[])
 	// 					  Entity(30, 30, grassTexture),
 	// 					  Entity(30, 60, grassTexture)};
 
-	std::vector<Entity> entities2 = {Entity(0, 0, grassTexture),
-									 Entity(30, 0, grassTexture),
-									 Entity(30, 30, grassTexture),
-									 Entity(30, 60, grassTexture)};
+	std::vector<Entity> entities2 = {Entity(Vector2f(0, 0), grassTexture),
+                         			 Entity(Vector2f(30, 0), grassTexture),
+                          			 Entity(Vector2f(30, 30), grassTexture),
+                          			 Entity(Vector2f(30, 60), grassTexture)};
 
 	{	// Essas chaves vão limitar o uso de memória, liberando a memória
-		Entity coisinha(100, 50, grassTexture); // adicionando outra entidade na list ade cima
+		Entity coisinha(Vector2f(100, 50), grassTexture); // adicionando outra entidade na list ade cima
 
 		entities2.push_back(coisinha);
 	}
