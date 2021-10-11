@@ -13,4 +13,4 @@ Toda vez que adicionar um novo resource (imagem, som, fonte, texto) na pasta "re
 
 ---
 
-parei em: https://youtu.be/qEzyb1EAVoY?list=PL2RPjWnJduNmXHRYwdtublIPdlqocBoLS&t=469
+parei em: https://youtu.be/ksXY1mHHi7Y?list=PL2RPjWnJduNmXHRYwdtublIPdlqocBoLS&t=1

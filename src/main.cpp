@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 
 #include "RenderWindow.hpp" // Dá pra usar aspas duplas para o include, vale a pena usar em coisas que eu mesmo criei (no caso foi o codergopher). Para não misturar com outros headers.
+#include "Entity.hpp"
 
 int main(int argc, char* args[])
 {
@@ -19,6 +21,25 @@ int main(int argc, char* args[])
 	// Criando um objeto de textura e indicando que é pra carregar na janela "window":
 	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
 
+	// Entity platform0(100, 50, grassTexture); // Entidade criada
+	// Entity platform1(56, 90, grassTexture); // outra entidade criada
+
+	// Entity entities[4] = {Entity(0, 0, grassTexture),
+	// 					  Entity(30, 0, grassTexture),
+	// 					  Entity(30, 30, grassTexture),
+	// 					  Entity(30, 60, grassTexture)};
+
+	std::vector<Entity> entities2 = {Entity(0, 0, grassTexture),
+									 Entity(30, 0, grassTexture),
+									 Entity(30, 30, grassTexture),
+									 Entity(30, 60, grassTexture)};
+
+	{	// Essas chaves vão limitar o uso de memória, liberando a memória
+		Entity coisinha(100, 50, grassTexture); // adicionando outra entidade na list ade cima
+
+		entities2.push_back(coisinha);
+	}
+
 	bool gameRunning = true;
 
 	SDL_Event event; // criando um objeto evento chamado "event"
@@ -33,7 +54,14 @@ int main(int argc, char* args[])
 		}
 
 		window.clear();
-		window.render(grassTexture);
+		// window.render(platform0); // render da primeira entidade
+		// window.render(platform1); // render da segunda
+
+		for (Entity& e : entities2) // poderia usar "auto" // "e" pode ser qualquer coisa
+		{
+			window.render(e);
+		}
+
 		window.display();
 	}
 
