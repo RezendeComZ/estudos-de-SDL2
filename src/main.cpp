@@ -5,6 +5,7 @@
 
 #include "RenderWindow.hpp" // Dá pra usar aspas duplas para o include, vale a pena usar em coisas que eu mesmo criei (no caso foi o codergopher). Para não misturar com outros headers.
 #include "Entity.hpp"
+#include "Utils.hpp"
 
 int main(int argc, char* args[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char* args[])
 
 	// Criando uma janela/objeto chamado "window":
 	RenderWindow window("Joguin v1.0", 1280, 720); // inicia a janela e o tamanho da janela
+
 
 	// Criando um objeto de textura e indicando que é pra carregar na janela "window":
 	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
@@ -44,14 +46,36 @@ int main(int argc, char* args[])
 
 	SDL_Event event; // criando um objeto evento chamado "event"
 
+	const float timeStep = 0.001f; // quanto vai demorar pra atualizar
+	float accumulator = 0.0f; // quando encher, vai limpa e atualiza o jogo de novo
+	float currentTime = utils::hireTimeInSeconds();
+
 	while (gameRunning)
 	{
-		// Get our controls and events
-		while (SDL_PollEvent(&event))
+		int startTick = SDL_GetTicks();
+
+		float newTime = utils:: hireTimeInSeconds();
+		float frameTime = newTime - currentTime;
+
+		currentTime = newTime;
+
+		accumulator += frameTime;
+
+		while (accumulator >= timeStep)
 		{
-			if (event.type == SDL_QUIT)
-				gameRunning = false;
+
+			// Get our controls and events:
+			while (SDL_PollEvent(&event))
+			{
+				if (event.type == SDL_QUIT)
+					gameRunning = false;
+			}
+
+			accumulator -= timeStep;
+
 		}
+
+		const float alpha = accumulator / timeStep; // a sobra do acumulador
 
 		window.clear();
 		// window.render(platform0); // render da primeira entidade
@@ -62,7 +86,14 @@ int main(int argc, char* args[])
 			window.render(e);
 		}
 
+		std::cout << utils::hireTimeInSeconds() << std::endl;
+
 		window.display();
+
+		int frameTicks = SDL_GetTicks() - startTick;
+
+		if (frameTicks < 1000 / window.getRefreshRate())
+			SDL_Delay(window.getRefreshRate() - frameTicks);
 	}
 
 	window.cleanUp();

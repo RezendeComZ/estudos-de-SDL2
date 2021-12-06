@@ -16,7 +16,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 		std::cout << "Window failed to init. Error: " << SDL_GetError() << std::endl;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); // renderizar em "window" // -1 é onde quero renderizar, -1 é indicando o driver que vai satisfazer tudo que preciso // Se tiver uma placa de vídeo com aceleração o último parâmetro indica para usar ela
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); // renderizar em "window" // -1 é onde quero renderizar, -1 é indicando o driver que vai satisfazer tudo que preciso // Se tiver uma placa de vídeo com aceleração o último parâmetro indica para usar ela // SLD_RENDERER_PRESENTVSYNC para atualizar só quando precisar
 }
 
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
@@ -28,6 +28,17 @@ SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
 		std::cout << "Failed to load texture. Error: " << SDL_GetError() << std::endl;
 
 	return texture;
+}
+
+int RenderWindow::getRefreshRate() // Solução nada a ver que ele sugeriu mas corrigiu nos comentários e não sei se devo usar ou não pq não entendi
+{
+	int displayIndex = SDL_GetWindowDisplayIndex( window );
+
+	SDL_DisplayMode mode;
+
+	SDL_GetDisplayMode(displayIndex, 0, &mode);
+
+	return mode.refresh_rate;
 }
 
 void RenderWindow::cleanUp()

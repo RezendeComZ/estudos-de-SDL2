@@ -9,6 +9,9 @@ class RenderWindow
 public:
 	RenderWindow(const char* p_title, int p_w, int p_h); // constructor // titulo, width e height // "p_" é de parâmetro
 	SDL_Texture* loadTexture(const char* p_filePath);
+
+	int getRefreshRate(); // Solução nada a ver que ele sugeriu mas corrigiu nos comentários e não sei se devo usar ou não pq não entendi
+
 	void cleanUp();
 	void clear();
 	void render(Entity& p_entity);
