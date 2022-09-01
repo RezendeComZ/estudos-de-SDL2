@@ -23,6 +23,15 @@ struct game_object {
     float vel_y;
 } ball, paddle;
 
+// utils
+void reverte_horizontal(void) {
+    ball.vel_x = -ball.vel_x;
+}
+
+void reverte_vertical(void) {
+    ball.vel_y = -ball.vel_y;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Function to initialize our SDL window
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,7 +98,7 @@ void setup(void) {
     // Initialize the ball object moving down at a constant velocity
     ball.width = 15;
     ball.height = 15;
-    ball.x = 20;
+    ball.x = 400;
     ball.y = 20;
     ball.vel_x = 150;
     ball.vel_y = 150;
@@ -110,6 +119,7 @@ void update(void) {
     int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - last_frame_time);
 
     // Only delay if we are too fast too update this frame
+    // ! Pode ser apagado agora, mas vai deixar sem limite de frames
     if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME)
         SDL_Delay(time_to_wait);
 
@@ -125,15 +135,26 @@ void update(void) {
 
     // TODO: Update paddle position based on its velocity
     paddle.x += paddle.vel_x * delta_time;
+    // fiz isso pra parar quando soltar a tecla:
     if (paddle.x < 0) {
         paddle.x = 0;
     }
 
     // TODO: Check for ball collision with the walls
-    // ...
 
-    // TODO: Check for ball collision with the paddle
+    if (ball.x <= 0 || ball.x >= (WINDOW_WIDTH - ball.width)) {
+        reverte_horizontal();
+    }
+    if (ball.y <= 0) {
+        reverte_vertical();
+    }
 
+    // Check for ball collision with the paddle
+    if ((ball.y + ball.height) >= paddle.y // Chegou na altura do paddle
+        && ball.x > paddle.x // Está em uma posição depois do paddle
+        && ball.x < (paddle.x + paddle.width)) { // Está antes do final do paddle
+        reverte_vertical();
+    }
 
     // TODO: Prevent paddle from moving outside the boundaries of the window
     if (paddle.x >= (WINDOW_WIDTH - paddle.width)) {
@@ -141,7 +162,10 @@ void update(void) {
     }
 
     // TODO: Check for game over when ball hits the bottom part of the screen
-    // ...
+    if (ball.y >= WINDOW_HEIGHT) {
+        ball.y = 0;
+        // game_is_running = false;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
